@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Reader - Number Guessing Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../CSS-FILE/start_page.css">
+</head>
+<body class="text-white min-h-screen flex flex-col">
+
+    <!-- Background Elements -->
+    <div class="bg-mesh"></div>
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="floating-orb orb-3"></div>
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="w-full p-6 flex justify-between items-center relative z-50">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-brain text-2xl text-indigo-400"></i>
+            <span class="text-xl font-bold tracking-tight">Mind<span class="text-indigo-400">Reader</span></span>
+        </div>
+        <button onclick="showSection('landing')" id="nav-home" class="hidden text-sm font-medium text-slate-400 hover:text-white transition-colors">
+            <i class="fa-solid fa-arrow-left mr-2"></i>Back to Home
+        </button>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 flex items-center justify-center p-4 relative w-full max-w-6xl mx-auto">
+
+        <!-- LANDING PAGE SECTION -->
+        <section id="landing-section" class="page-section active-section w-full">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Left Column: Hero Content -->
+                <div class="space-y-8 text-center lg:text-left">
+                    <div class="space-y-4">
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-indigo-300 mb-4">
+                            <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+                            Interactive Web Game
+                        </div>
+                        <h1 class="text-5xl lg:text-7xl font-black leading-tight glow-text">
+                            Can you read the <span class="gradient-text">machine's mind?</span>
+                        </h1>
+                        <p class="text-lg text-slate-400 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                            Test your intuition in this sleek, modern number guessing game. Set your range, trust your gut, and beat the algorithm in just 3 attempts.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <button onclick="startGameFlow()" class="btn-primary px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 group">
+                            <span>Play Now</span>
+                            <i class="fa-solid fa-play text-sm group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                        <button onclick="scrollToHowToPlay()" class="px-8 py-4 rounded-2xl font-bold text-lg border border-white/10 hover:bg-white/5 transition-all flex items-center justify-center gap-3">
+                            <span>How to Play</span>
+                            <i class="fa-solid fa-chevron-down text-sm"></i>
+                        </button>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="flex justify-center lg:justify-start gap-8 pt-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white">3</div>
+                            <div class="text-xs text-slate-500 uppercase tracking-wider">Attempts</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white">∞</div>
+                            <div class="text-xs text-slate-500 uppercase tracking-wider">Range</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white">0</div>
+                            <div class="text-xs text-slate-500 uppercase tracking-wider">Limits</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Visual/Preview -->
+                <div class="relative hidden lg:block">
+                    <div class="glass-card rounded-3xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="flex gap-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <i class="fa-solid fa-gamepad text-slate-600"></i>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="h-4 bg-white/10 rounded w-3/4"></div>
+                            <div class="h-4 bg-white/10 rounded w-1/2"></div>
+                            <div class="grid grid-cols-3 gap-2 mt-6">
+                                <div class="aspect-square bg-indigo-500/20 rounded-xl flex items-center justify-center text-2xl font-bold text-indigo-400">?</div>
+                                <div class="aspect-square bg-white/5 rounded-xl flex items-center justify-center text-2xl font-bold text-slate-600">?</div>
+                                <div class="aspect-square bg-white/5 rounded-xl flex items-center justify-center text-2xl font-bold text-slate-600">?</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-10 -right-10 w-20 h-20 bg-purple-500/30 rounded-full blur-2xl"></div>
+                    <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-500/30 rounded-full blur-3xl"></div>
+                </div>
+            </div>
+
+            <!-- How to Play Section -->
+            <div id="how-to-play" class="mt-24 mb-12">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4">How to <span class="gradient-text">Play</span></h2>
+                    <p class="text-slate-400">Master the game in three simple steps</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Step 1 -->
+                    <div class="feature-card glass-card rounded-2xl p-6 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-indigo-500/20"></div>
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-4 text-indigo-400">
+                            <i class="fa-solid fa-sliders text-xl"></i>
+                        </div>
+                        <div class="text-xs font-bold text-indigo-400 mb-2 uppercase tracking-wider">Step 01</div>
+                        <h3 class="text-xl font-bold mb-2">Set the Range</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Choose your difficulty by setting the maximum number limit. The higher the number, the harder the challenge.
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="feature-card glass-card rounded-2xl p-6 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-purple-500/20"></div>
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4 text-purple-400">
+                            <i class="fa-solid fa-bullseye text-xl"></i>
+                        </div>
+                        <div class="text-xs font-bold text-purple-400 mb-2 uppercase tracking-wider">Step 02</div>
+                        <h3 class="text-xl font-bold mb-2">Make Your Guess</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            You have 3 attempts to guess the correct number. Enter your prediction and submit to see if you match the computer's choice.
+                        </p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="feature-card glass-card rounded-2xl p-6 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-pink-500/20"></div>
+                        <div class="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center mb-4 text-pink-400">
+                            <i class="fa-solid fa-trophy text-xl"></i>
+                        </div>
+                        <div class="text-xs font-bold text-pink-400 mb-2 uppercase tracking-wider">Step 03</div>
+                        <h3 class="text-xl font-bold mb-2">Win or Retry</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Guess correctly to trigger the victory celebration! Run out of attempts? The number is revealed and you can try again immediately.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tips Box -->
+                <div class="mt-8 glass-card rounded-2xl p-6 border-l-4 border-indigo-500">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0 text-indigo-400 mt-1">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-1">Pro Tip</h4>
+                            <p class="text-slate-400 text-sm">
+                                Use the hints! After each wrong guess, the game tells you if your number was too high or too low. Use this information to narrow down your next attempt strategically.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME SECTION -->
+        <section id="game-section" class="page-section hidden-section w-full max-w-md">
+            <div class="glass-panel rounded-3xl p-8 w-full shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-50"></div>
+
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 mb-4 border border-white/10">
+                        <i class="fa-solid fa-brain text-2xl gradient-text"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-2">Mind <span class="gradient-text">Reader</span></h2>
+                    <p id="game-subtitle" class="text-slate-400 text-sm">Set the difficulty to begin</p>
+                </div>
+
+                <!-- Phase 1: Setup -->
+                <div id="setup-phase" class="animate-pop">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">Maximum Limit</label>
+                    <div class="relative mb-6">
+                        <input type="number" id="max-limit-input" placeholder="e.g. 100" min="1" max="10000"
+                            class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-4 text-xl text-center focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder-slate-600 text-white">
+                    </div>
+                    <button onclick="initGame()" 
+                        class="w-full btn-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-500/30 transform transition active:scale-95">
+                        Start Game
+                    </button>
+                </div>
+
+                <!-- Phase 2: Gameplay -->
+                <div id="gameplay-phase" class="hidden">
+                    <div class="flex justify-between items-center mb-6 px-2">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Attempts Left</span>
+                        <div class="flex space-x-2" id="attempts-container"></div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <input type="number" id="guess-input" placeholder="?" 
+                            class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-6 text-4xl font-bold text-center focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder-slate-700 text-white tracking-widest">
+                    </div>
+
+                    <div id="feedback-msg" class="h-8 text-center text-sm font-medium mb-4 text-slate-300"></div>
+
+                    <button onclick="submitGuess()" 
+                        class="w-full bg-white text-slate-900 hover:bg-slate-100 font-bold py-4 rounded-xl shadow-lg transform transition hover:-translate-y-1 active:scale-95 mb-4">
+                        Guess Number
+                    </button>
+                    
+                    <button onclick="resetGame()" class="w-full text-slate-500 text-sm hover:text-white transition-colors py-2">
+                        Give Up
+                    </button>
+                </div>
+
+                <!-- Phase 3: Game Over / Win -->
+                <div id="result-phase" class="hidden text-center animate-pop py-4">
+                    <div id="result-icon" class="text-6xl mb-4 animate-bounce">🏆</div>
+                    <h2 id="result-title" class="text-3xl font-bold mb-2 text-white">You Win!</h2>
+                    <p id="result-message" class="text-slate-300 mb-8">The number was 42.</p>
+                    
+                    <div class="space-y-3">
+                        <button onclick="resetGame()" 
+                            class="w-full btn-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-500/30 transform transition hover:-translate-y-1 active:scale-95">
+                            Play Again
+                        </button>
+                        <button onclick="showSection('landing')" 
+                            class="w-full text-slate-400 hover:text-white text-sm py-2 transition-colors">
+                            Back to Home
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="w-full p-6 text-center text-slate-600 text-sm relative z-10">
+        <p>&copy; 2026 Mind Reader Game. Built with modern web technologies.</p>
+    </footer>
+
+    <script src="../SCRIPT-FILE/script.js"></script>
+</body>
+</html>
