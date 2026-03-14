@@ -122,7 +122,7 @@ function handleWrongGuess(guess) {
     guessInput.focus();
 
     // Hint Logic
-    const hint = guess < targetNumber ? "Too Low!" : "Too High!";
+    const hint = guess < targetNumber ? "To Low! Bro" : "Too High! Bro";
     feedbackMsg.textContent = `${hint} Try again.`;
     feedbackMsg.className = "h-8 text-center text-sm font-medium mb-4 text-rose-400";
 
